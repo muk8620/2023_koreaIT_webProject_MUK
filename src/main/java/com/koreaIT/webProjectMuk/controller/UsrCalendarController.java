@@ -5,16 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class UsrApiController {
+public class UsrCalendarController {
 	
-	@RequestMapping("/usr/api/APITest")
-	public String APITest() {
-		return "usr/api/APITest";
-	}
-	
-	@RequestMapping("/usr/api/APITest2")
-	public String APITest2() {
-		return "usr/api/APITest2";
+	@RequestMapping("/usr/calendar/list")
+	public String showMain() {
+		return "usr/calendar/list";
 	}
 	
 }

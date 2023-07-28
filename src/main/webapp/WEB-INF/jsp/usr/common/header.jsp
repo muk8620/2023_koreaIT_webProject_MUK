@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/resource/images/favicon.ico" />
@@ -15,7 +15,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-<link rel="stylesheet" href="/resource/common.css" />
+<link rel="stylesheet" href="/resource/common.css" 	/>
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle }</title>
 </head>
@@ -25,8 +25,7 @@
 		<div class="flex-grow"></div>
 		<ul class="flex menu menu-horizontal bg-base-200">
 			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/">HOME</a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/article/list?boardId=1">NOTICE</a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/article/list?boardId=2">FREE</a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/calendar/list">calendar</a></li>
 			<c:if test="${rq.getLoginedMemberId() == 0}">
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/join">JOIN</a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/login">LOGIN</a></li>
