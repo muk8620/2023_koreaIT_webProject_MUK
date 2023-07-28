@@ -2,52 +2,70 @@ DROP DATABASE IF EXISTS project;
 CREATE DATABASE project;
 USE project;
 
+# article 테이블 생성
+# truncate table article;
+# drop table article;
+
 CREATE TABLE article(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    `body` TEXT NOT NULL
-);
-
-ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
-ALTER TABLE article ADD COLUMN boardId INT UNSIGNED NOT NULL AFTER memberId;
-ALTER TABLE article ADD COLUMN hitCnt INT UNSIGNED NOT NULL DEFAULT 0;
-
-CREATE TABLE `member`(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    loginId VARCHAR(20) NOT NULL UNIQUE,
-    loginPw VARCHAR(100) NOT NULL,
-    `authLevel` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '권한 레벨 (일반 = 1, 관리자 = 3)',
-    `name` VARCHAR(20) NOT NULL,
-    nickname VARCHAR(20) NOT NULL,
-    cellphoneNum VARCHAR(20) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
-    delDate DATETIME COMMENT '탈퇴 날짜'
-);
-
-CREATE TABLE board(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    `code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(공지사항), free(자유), ...',
-    `name` VARCHAR(20) NOT NULL UNIQUE COMMENT '게시판 이름',
-    delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부 (삭제 전 = 0, 삭제 후 = 1)',
-    delDate DATETIME COMMENT '삭제 날짜'
-);
-
-CREATE TABLE reactionPoint(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
     , regDate DATETIME NOT NULL
     , updateDate DATETIME NOT NULL
     , memberId INT UNSIGNED NOT NULL
-    , relTypeCode VARCHAR(20) NOT NULL COMMENT '관련 데이터 타입 코드'
-    , relId INT UNSIGNED NOT NULL COMMENT '관련 데이터 번호'
-    , `point` INT NOT NULL DEFAULT 0 COMMENT '좋아요 1, 싫어요 -1 아무것도 안함 0' 
+    , groupId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '속한 그룹이 없는 경우 : 0'
+    , title VARCHAR(80) NOT NULL
+    , `body` TEXT NOT NULL
 );
+
+# board 테이블 생성
+# truncate table board;
+# drop table board;
+
+CREATE TABLE board(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , regDate DATETIME NOT NULL
+    , updateDate DATETIME NOT NULL
+    , `code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(공지사항), free(자유), ...'
+    , `name` VARCHAR(40) NOT NULL UNIQUE COMMENT '게시판 이름'
+    , delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부 (삭제 전 = 0, 삭제 후 = 1)'
+    , delDate DATETIME COMMENT '삭제 날짜'
+);
+
+# `member` 테이블 생성
+# truncate table `member`;
+# drop table `member`;
+
+CREATE TABLE `member`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , regDate DATETIME NOT NULL
+    , updateDate DATETIME NOT NULL
+    , loginId VARCHAR(30) NOT NULL UNIQUE
+    , loginPw VARCHAR(100) NOT NULL
+    , `authLevel` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '권한 레벨 (일반 = 1, 관리자 = 3)'
+    , `name` VARCHAR(20) NOT NULL
+    , nickname VARCHAR(40) NOT NULL
+    , cellphoneNum VARCHAR(20) NOT NULL
+    , email VARCHAR(50) NOT NULL
+    , groupId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '속한 그룹이 없는 경우 : 0'
+    , delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)'
+    , delDate DATETIME COMMENT '탈퇴 날짜'
+);
+
+# `group` 테이블 생성
+# truncate table `group`;
+# drop table `group`;
+
+CREATE TABLE `group`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , regDate DATETIME NOT NULL
+    , updateDate DATETIME NOT NULL
+    , `name` VARCHAR(40) NOT NULL
+    , delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)'
+    , delDate DATETIME COMMENT '탈퇴 날짜'
+);
+
+# reply 테이블 생성
+# truncate table reply;
+# drop table reply;
 
 CREATE TABLE reply (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
@@ -59,211 +77,110 @@ CREATE TABLE reply (
     , `body` TEXT NOT NULL
 );
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-boardId = 2,
-title = '제목1',
-`body` = '내용1';
+# calendar 테이블 생성
+# truncate table calendar;
+# drop table calendar;
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 3,
-boardId = 2,
-title = '제목2',
-`body` = '내용2';
+CREATE TABLE calendar(
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+	, regDate DATETIME NOT NULL
+    , updateDate DATETIME NOT NULL
+    , memberId INT UNSIGNED NOT NULL
+	, groupId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '속한 그룹이 없는 경우 : 0'
+	, title VARCHAR(50) NOT NULL
+	, writer VARCHAR(50) NOT NULL
+	, content VARCHAR(1000) 
+	, start1 DATETIME NOT NULL
+	, end1 DATETIME NOT NULL
+	, allDay TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종일 하는 일정 (false = 0, true = 1)'
+	, textColor VARCHAR(50)
+	, backgroundColor VARCHAR(50)
+	, borderColor VARCHAR(50)
+);
 
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 1,
-boardId = 1,
-title = '공지1',
-`body` = '공지사항1';
-
-INSERT INTO `member`
-SET regDate = NOW(),
-updateDate = NOW(),
-loginId = 'admin',
-loginPw = SHA2('admin', 256),
-authLevel = 3,
-`name` = 'admin',
-nickname = 'admin',
-cellphoneNum = '01022222222',
-email = 'admin@gmail.com';
-
-INSERT INTO `member`
-SET regDate = NOW(),
-updateDate = NOW(),
-loginId = 'test2',
-loginPw = SHA2('test2', 256),
-`name` = 'test2',
-nickname = 'test2',
-cellphoneNum = '01011112222',
-email = 'test2@gmail.com';
-
-INSERT INTO `member`
-SET regDate = NOW(),
-updateDate = NOW(),
-loginId = 'test3',
-loginPw = SHA2('test3', 256),
-`name` = 'test3',
-nickname = 'test3',
-cellphoneNum = '01033334444',
-email = 'test3@gmail.com';
-
-INSERT INTO board
-SET regDate = NOW(),
-updateDate = NOW(),
-`code` = 'notice',
-`name` = '공지사항';
-
-INSERT INTO board
-SET regDate = NOW(),
-updateDate = NOW(),
-`code` = 'free',
-`name` = '자유';
-
-# 2번 회원이 1번 글 좋아요
-INSERT INTO reactionPoint
-SET regDate = NOW()
-, updateDate = NOW()
-, memberId = 2
-, relTypeCode = 'article'
-, relId = 1
-, `point`= 1;
-
-# 2번 회원이 2번 글 싫어요
-INSERT INTO reactionPoint
-SET regDate = NOW()
-, updateDate = NOW()
-, memberId = 2
-, relTypeCode = 'article'
-, relId = 2
-, `point`= -1;
-
-# 2번 회원이 3번 글 싫어요
-INSERT INTO reactionPoint
-SET regDate = NOW()
-, updateDate = NOW()
-, memberId = 2
-, relTypeCode = 'article'
-, relId = 3
-, `point`= -1;
-
-# 3번 회원이 2번 글 좋아요
-INSERT INTO reactionPoint
-SET regDate = NOW()
-, updateDate = NOW()
-, memberId = 3
-, relTypeCode = 'article'
-, relId = 2
-, `point`= 1;
-
-# 3번 회원이 3번 글 좋아요
-INSERT INTO reactionPoint
-SET regDate = NOW()
-, updateDate = NOW()
-, memberId = 3
-, relTypeCode = 'article'
-, relId = 3
-, `point`= 1;
-
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-relTypeCode = 'article',
-relId = 2,
-`body` = '댓글1';
-
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-relTypeCode = 'article',
-relId = 2,
-`body` = '댓글2';
-
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 3,
-relTypeCode = 'article',
-relId = 2,
-`body` = '댓글3';
-
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 3,
-relTypeCode = 'article',
-relId = 3,
-`body` = '댓글4';
-
-SELECT * FROM article ORDER BY id DESC;
+SELECT * FROM article;
+SELECT * FROM board;
 SELECT * FROM `member`;
-SELECT * FROM board;    
-SELECT * FROM reactionPoint;
+SELECT * FROM `group`;
 SELECT * FROM reply;
+SELECT * FROM calendar;
 
+INSERT INTO calendar 
+SET regDate = NOW()
+    , updateDate = NOW()
+    , memberId = 1
+    , title = '할일'
+    , writer = '나'
+    , content = '테스트'
+    , start1 = "2021-05-01T00:00:00"
+    , end1 = "2021-05-03T00:00:00"
+    , textColor = "yellow"
+    , backgroundColor = "navy"
+    , borderColor = "navy";
 
--- SELECT LAST_INSERT_ID();
-
-/*
-insert into article
-(
-    regDate, updateDate, memberId, boardId, title, `body`
-)
-select now(), now(), FLOOR(RAND() * 3) + 1, 2, concat('제목_', rand()), CONCAT('내용_', RAND())
-from article;
-
-insert into article
-(
-    regDate, updateDate, memberId, boardId, title, `body`
-)
-select now(), now(), 1, 1, concat('공지_', rand()), CONCAT('공지사항_', RAND())
-from article;
-*/
-
-/*
- SELECT a.*
-         , m.nickname AS `writer`
-         , IFNULL(SUM(rp.point), 0) as sumReactionPoint
-         , sum(if(rp.point > 0, rp.point, 0)) AS goodReactionPoint
-         , SUM(IF(rp.point < 0, rp.point, 0)) AS badReactionPoint
-     FROM article AS a
-     INNER JOIN `member` AS m
-     ON a.memberId = m.id
-     left JOIN reactionPoint AS rp
-     ON rp.relTypeCode = 'article'
-     and a.id = rp.relId
-     WHERE a.boardId = 2
-*/
-/*
-SELECT SHA2('', 256);
-
-WITH am AS (
-    SELECT a.*
-            ,m.nickname AS `writer`
-        FROM article AS a
-        INNER JOIN `member` AS m
-        ON a.memberId = m.id
-        WHERE a.boardId = 2
-)
- SELECT am.*
-         , IFNULL(SUM(rp.point), 0) AS sumReactionPoint
-         , SUM(IF(rp.point > 0, rp.point, 0)) AS goodReactionPoint
-         , SUM(IF(rp.point < 0, rp.point, 0)) AS badReactionPoint
-     FROM am
-     LEFT JOIN reactionPoint AS rp
-     ON rp.relTypeCode = 'article'
-     AND am.id = rp.relId
-     GROUP BY am.id
-     ORDER BY am.id DESC
-
-TRUNCATE `member`;
-*/
-
+-- INSERT INTO article
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- memberId = 2,
+-- boardId = 2,
+-- title = '제목1',
+-- `body` = '내용1';
+-- 
+-- INSERT INTO article
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- memberId = 3,
+-- boardId = 2,
+-- title = '제목2',
+-- `body` = '내용2';
+-- 
+-- INSERT INTO article
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- memberId = 1,
+-- boardId = 1,
+-- title = '공지1',
+-- `body` = '공지사항1';
+-- 
+-- INSERT INTO `member`
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- loginId = 'admin',
+-- loginPw = SHA2('admin', 256),
+-- authLevel = 3,
+-- `name` = 'admin',
+-- nickname = 'admin',
+-- cellphoneNum = '01022222222',
+-- email = 'admin@gmail.com';
+-- 
+-- INSERT INTO `member`
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- loginId = 'test2',
+-- loginPw = SHA2('test2', 256),
+-- `name` = 'test2',
+-- nickname = 'test2',
+-- cellphoneNum = '01011112222',
+-- email = 'test2@gmail.com';
+-- 
+-- INSERT INTO `member`
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- loginId = 'test3',
+-- loginPw = SHA2('test3', 256),
+-- `name` = 'test3',
+-- nickname = 'test3',
+-- cellphoneNum = '01033334444',
+-- email = 'test3@gmail.com';
+-- 
+-- INSERT INTO board
+-- SET regDate = NOW(),
+-- updateDate = NOW(),
+-- `code` = 'notice',
+-- `name` = '공지사항';
+-- 
+-- INSERT INTO board
+-- SET reg//Date = NOW(),
+-- updateDate = NOW(),
+-- `code` = 'free',
+-- `name` = '자유';
