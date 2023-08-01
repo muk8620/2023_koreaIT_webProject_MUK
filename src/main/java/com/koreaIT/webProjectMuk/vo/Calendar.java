@@ -16,9 +16,9 @@ public class Calendar {
 	private String title;
 	private String writer;
 	private String content;
-	private String start1;
-	private String end1;
-	private int allDay;
+	private String start;
+	private String end;
+	private boolean allDay;
 	private String textColor;
 	private String backgroundColor;
 	private String borderColor;
