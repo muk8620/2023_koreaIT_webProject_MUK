@@ -14,7 +14,6 @@
               center: 'title',
               right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,list'
             },
-            initialDate: '2021-05-12',
             locale: 'ko',
             navLinks: true, // can click day/week names to navigate views
             editable: true,
@@ -45,7 +44,7 @@
           		 url:"getCalendarList",
           		 dataType:"json",  
 	          	 success: function(data){
-	          		 console.log(data);
+	          		console.log(data);
 	          		successCallback(data);
 	             },
 	             error: function(){
@@ -56,7 +55,6 @@
 		});
         calendar.render();
       });
-        
 
      </script>
      <style>
