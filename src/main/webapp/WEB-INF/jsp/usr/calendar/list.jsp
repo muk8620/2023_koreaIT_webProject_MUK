@@ -42,9 +42,8 @@
           	  $.ajax({
           		 type:"get",
           		 url:"getCalendarList",
-          		 dataType:"json",  
+          		 dataType:"json",
 	          	 success: function(data){
-	          		console.log(data);
 	          		successCallback(data);
 	             },
 	             error: function(){
