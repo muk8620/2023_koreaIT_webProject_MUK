@@ -38,7 +38,6 @@ public class UsrApiController {
     @Value("${google.secret}")
     private String googleClientSecret;
 
-
     // 구글 로그인창 호출
     // http://localhost:8080/login/getGoogleAuthUrl
     @GetMapping(value = "/login/getGoogleAuthUrl")
@@ -50,10 +49,10 @@ public class UsrApiController {
         log.info("myLog-LoginUrl : {}",googleLoginUrl);
         log.info("myLog-ClientId : {}",googleClientId);
         log.info("myLog-RedirectUrl : {}",googleRedirectUrl);
-
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(reqUrl));
-
+        
         //1.reqUrl 구글로그인 창을 띄우고, 로그인 후 /login/oauth_google_check 으로 리다이렉션하게 한다.
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
@@ -62,9 +61,9 @@ public class UsrApiController {
     @GetMapping(value = "/login/oauth_google_check")
     public String oauth_google_check(HttpServletRequest request,
                                      @RequestParam(value = "code") String authCode,
-                                     HttpServletResponse response) throws Exception{
+                                     HttpServletResponse response) {
 
-        //2.구글에 등록된 레드망고 설정정보를 보내어 약속된 토큰을 받위한 객체 생성
+        //2.구글에 등록된 레드망고 설정정보를 보내어 약속된 토큰을 받기 위한 객체 생성
         GoogleOAuthRequest googleOAuthRequest = GoogleOAuthRequest
                 .builder()
                 .clientId(googleClientId)
@@ -83,7 +82,6 @@ public class UsrApiController {
 
         log.info("responseBody {}",googleLoginResponse.toString());
 
-
         String googleToken = googleLoginResponse.getId_token();
 
         //5.받은 토큰을 구글에 보내 유저정보를 얻는다.
@@ -92,7 +90,7 @@ public class UsrApiController {
         //6.허가된 토큰의 유저정보를 결과로 받는다.
         String resultJson = restTemplate.getForObject(requestUrl, String.class);
 
-        return googleToken;
+        return resultJson;
     }
     
 }

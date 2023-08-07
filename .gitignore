@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+###   개인 설정파일   ###
+**/src/main/resources/application-security.yml

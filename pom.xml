@@ -80,6 +80,11 @@
 		    <version>3.0.1</version>
 		</dependency>
 		<dependency>
+	     <groupId>com.google.api-client</groupId>
+	     <artifactId>google-api-client</artifactId>
+	     <version>1.32.1</version>
+	   </dependency>
+		<dependency>
 		  <groupId>com.google.photos.library</groupId>
 		  <artifactId>google-photos-library-client</artifactId>
 		  <version>1.7.3</version>

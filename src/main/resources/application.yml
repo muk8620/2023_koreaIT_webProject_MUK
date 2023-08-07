@@ -1,6 +1,8 @@
 server:
-  port: 8081
+  port: 8080
 spring:
+  config:
+    import: optional:classpath:application-security.yml
   mvc:
     view:
       prefix: /WEB-INF/jsp/
@@ -12,13 +14,3 @@ spring:
     password: 
 mybatis:
   type-aliases-package: com.koreaIT.webProjectMuk.vo\
-google:
-  auth:
-    url: https://oauth2.googleapis.com
-  login:
-    url: https://accounts.google.com
-  redirect:
-    url: http://localhost:8080/login/oauth_google_check
-  client:
-    id: 1085307948053-eomnkhsbc8091e1e2jql8hfkj3bo4sfl.apps.googleusercontent.com
-  secret: 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
