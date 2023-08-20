@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   config:
     import: optional:classpath:application-security.yml
@@ -12,5 +12,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/project?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
     username: root
     password: 
+  devtools:
+    livereload:
+      enabled: true
 mybatis:
   type-aliases-package: com.koreaIT.webProjectMuk.vo\

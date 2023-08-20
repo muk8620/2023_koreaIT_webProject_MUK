@@ -1,0 +1,8 @@
+OAuth2.0:
+  google:
+    authUrl: https://oauth2.googleapis.com
+    loginUrl: https://accounts.google.com
+    redirectUrl: http://localhost:8081/login/oauth_google_check
+    clientId: 1085307948053-5ujkmo5ginff1419hjk3rpjujv93qg4c.apps.googleusercontent.com
+    clientSecret: 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	 
+    scope: https://www.googleapis.com/auth/photoslibrary

@@ -25,7 +25,6 @@
 		<div class="flex-grow"></div>
 		<ul class="flex menu menu-horizontal bg-base-200">
 			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/">HOME</a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/calendar/list">calendar</a></li>
 			<c:if test="${rq.getLoginedMemberId() == 0}">
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/join">JOIN</a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/login">LOGIN</a></li>
@@ -41,7 +40,12 @@
 	
 	<section class="my-3 text-2xl">
 		<div class="container mx-auto px-3">
-			<h1>${pageTitle }</h1>
+			<ul class="flex menu menu-horizontal bg-base-200">
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/calendar/list">일정</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/chat/chatting">채팅</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/map/list">지도</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/album/list">앨범</a></li>
+			</ul>
 		</div>
 	</section>
 	
