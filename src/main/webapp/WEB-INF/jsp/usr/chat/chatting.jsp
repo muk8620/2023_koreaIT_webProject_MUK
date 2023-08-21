@@ -1,118 +1,107 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<meta charset="UTF-8">
-	<title>Chatting</title>
-	<style>
-		*{
-			margin:0;
-			padding:0;
-		}
-		.container{
-			width: 500px;
-			margin: 0 auto;
-			padding: 25px
-		}
-		.container h1{
-			text-align: left;
-			padding: 5px 5px 5px 15px;
-			color: #FFBB00;
-			border-left: 3px solid #FFBB00;
-			margin-bottom: 20px;
-		}
-		.chating{
-			background-color: #000;
-			width: 500px;
-			height: 500px;
-			overflow: auto;
-		}
-		.chating p{
-			color: #fff;
-			text-align: left;
-		}
-		input{
-			width: 330px;
-			height: 25px;
-		}
-		#yourMsg{
-			display: none;
-		}
-	</style>
-</head>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script type="text/javascript">
-	var ws;
+<c:set var="pageTitle" value="Chatting" />
+<%@ include file="../common/header.jsp"%>
 
-	function wsOpen(){
-		ws = new WebSocket("ws://" + location.host + "/chatting");
-		wsEvt();
-	}
-		
-	function wsEvt() {
-		ws.onopen = function(data){
-			//소켓이 열리면 초기화 세팅하기
-		}
-		
-		ws.onmessage = function(data) {
-			var msg = data.data;
-			if(msg != null && msg.trim() != ''){
-				$("#chating").append("<p>" + msg + "</p>");
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script>
+		$(document).ready(function(){
+			
+			const username = ${username};
+			
+			$("#disconn").on("click", (e) => {
+			    disconnect();
+			})
+			
+			$("#button-send").on("click", (e) => {
+			    send();
+			});
+			
+			var sockJs = new SockJS("/chatting", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+			
+			sockJs.onmessage = onMessage;
+			sockJs.onopen = onOpen;
+			sockJs.onclose = onClose;
+			
+			function send(){
+			
+			    let msg = document.getElementById("msg");
+			
+			    console.log(username + ":" + msg.value);
+			    sockJs.send(username + ":" + msg.value);
+			    msg.value = '';
 			}
-		}
-
-		document.addEventListener("keypress", function(e){
-			if(e.keyCode == 13){ //enter press
-				send();
+			
+			//채팅창에서 나갔을 때
+			function onClose(evt) {
+			    var str = username + ": 님이 방을 나가셨습니다.";
+			    sockJs.send(str);
 			}
-		});
-	}
+			
+			//채팅창에 들어왔을 때
+			function onOpen(evt) {
+			    var str = username + ": 님이 입장하셨습니다.";
+			    sockJs.send(str);
+			}
+			
+			function onMessage(msg) {
+			    var data = msg.data;
+			    var sessionId = null;
+			    //데이터를 보낸 사람
+			    var message = null;
+			    var arr = data.split(":");
+			
+			    for(var i=0; i<arr.length; i++){
+			        console.log('arr[' + i + ']: ' + arr[i]);
+			    }
+			
+			    var cur_session = username;
+			
+			    //현재 세션에 로그인 한 사람
+			    console.log("cur_session : " + cur_session);
+			    sessionId = arr[0];
+			    message = arr[1];
+			
+			    console.log("sessionID : " + sessionId);
+			    console.log("cur_session : " + cur_session);
+			
+			    //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+			    if(sessionId == cur_session){
+			        var str = "<div class='col-6'>";
+			        str += "<div class='alert alert-secondary'>";
+			        str += "<b>" + sessionId + " : " + message + "</b>";
+			        str += "</div></div>";
+			        $("#msgArea").append(str);
+			    }
+			    else{
+			        var str = "<div class='col-6'>";
+			        str += "<div class='alert alert-warning'>";
+			        str += "<b>" + sessionId + " : " + message + "</b>";
+			        str += "</div></div>";
+			        $("#msgArea").append(str);
+			    }
+			}
+		})
+	</script>
 
-	function chatName(){
-		var userName = $("#userName").val();
-		if(userName == null || userName.trim() == ""){
-			alert("사용자 이름을 입력해주세요.");
-			$("#userName").focus();
-		}else{
-			wsOpen();
-			$("#yourName").hide();
-			$("#yourMsg").show();
-		}
-	}
-
-	function send() {
-		var uN = $("#userName").val();
-		var msg = $("#chatting").val();
-		ws.send(uN+" : "+msg);
-		$('#chatting').val("");
-	}
-</script>
-<body>
-	<div id="container" class="container">
-		<h1>채팅</h1>
-		<div id="chating" class="chating">
-		</div>
-		
-		<div id="yourName">
-			<table class="inputTable">
-				<tr>
-					<th>사용자명</th>
-					<th><input type="text" name="userName" id="userName"></th>
-					<th><button onclick="chatName()" id="startBtn">이름 등록</button></th>
-				</tr>
-			</table>
-		</div>
-		<div id="yourMsg">
-			<table class="inputTable">
-				<tr>
-					<th>메시지</th>
-					<th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
-					<th><button onclick="send()" id="sendBtn">보내기</button></th>
-				</tr>
-			</table>
+<div class="container">
+	<div class="col-6">
+		<label><b>채팅방</b></label>
+	</div>
+	<div>
+		<div id="msgArea" class="col"></div>
+		<div class="col-6">
+			<div class="input-group mb-3">
+				<input type="text" id="msg" class="form-control"
+					aria-label="Recipient's username" aria-describedby="button-addon2">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button"
+						id="button-send">전송</button>
+				</div>
+			</div>
 		</div>
 	</div>
-</body>
-</html>
+</div>
+<%@ include file="../common/footer.jsp"%>
