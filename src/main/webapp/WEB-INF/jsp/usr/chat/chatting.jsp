@@ -6,7 +6,7 @@
 <%@ include file="../common/header.jsp"%>
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
-<script>
+	<script>
 		$(document).ready(function(){
 			
 			const username = ${username};
