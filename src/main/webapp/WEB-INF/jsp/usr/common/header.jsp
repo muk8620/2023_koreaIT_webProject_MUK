@@ -9,13 +9,13 @@
 <link rel="shortcut icon" href="/resource/images/favicon.ico" />
 <!-- 테일윈드 불러오기 -->
 <!-- 노말라이즈, 라이브러리 -->
-<link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.7/dist/full.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.1/dist/full.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-<link rel="stylesheet" href="/resource/common.css" 	/>
+<link rel="stylesheet" href="/resource/common.css" 	/>	
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle }</title>
 </head>
@@ -42,7 +42,7 @@
 		<div class="container mx-auto px-3">
 			<ul class="flex menu menu-horizontal bg-base-200">
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/calendar/list">일정</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/chat/chatting">채팅</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/chat/rooms">채팅</a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/map/list">지도</a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/album/list">앨범</a></li>
 			</ul>

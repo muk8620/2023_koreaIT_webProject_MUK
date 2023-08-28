@@ -7,7 +7,9 @@ import lombok.Data;
 @Data
 public class ChatRoomDTO {
 
-    private String roomId;
+    private int id;
+    private String regDate;
     private String name;
+    private int creatorId;
     private List<String> members;
 }

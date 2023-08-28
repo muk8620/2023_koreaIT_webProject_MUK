@@ -6,34 +6,69 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.koreaIT.webProjectMuk.dto.ChatMessageDTO;
 import com.koreaIT.webProjectMuk.dto.ChatRoomDTO;
 
 @Mapper
 public interface ChatDao {
 
     @Select("""
-    		
+			SELECT * FROM chatRoom
     		""")
     public List<ChatRoomDTO> getRooms();
-		/*
-		 * //채팅방 생성 순서 최근 순으로 반환 List<ChatRoomDTO> result = new
-		 * ArrayList<>(chatRoomDTOMap.values()); Collections.reverse(result);
-		 * 
-		 * return result;
-		 */
+    
+    @Insert("""
+    		INSERT INTO chatRoom
+				SET regDate = NOW()
+					, name = #{roomName}
+					, creatorId = #{creatorId}
+    		""")
+    public void createChatRoom(String roomName, int creatorId);
     
     @Select("""
-    		
+    		SELECT * 
+    			FROM chatRoom
+    			WHERE id = #{id}
     		""")
-    public ChatRoomDTO getRoomById(String id);
-//        return chatRoomDTOMap.get(id);
-
+    public ChatRoomDTO getRoomByRoomId(int id);
+    
+    @Select("""
+    		SELECT COUNT(id) 
+				FROM chatRoomParticipant
+				WHERE chatRoomId = #{roomId}
+				AND memberId = #{memberId};
+    		""")
+	public int getRoomByRoomIdAndMemberId(int roomId, int memberId);
+    
     @Insert("""
-    		
+    		INSERT INTO chatRoomParticipant
+				SET regDate = NOW()
+					, chatRoomId = #{roomId}
+					, memberId = #{memberId}
     		""")
-    public void createChatRoom(String name);
-//        ChatRoomDTO room = ChatRoomDTO.create(name);
-//        chatRoomDTOMap.put(room.getRoomId(), room);
-//
-//        return room;
+	public void doIncreaseParticipant(int roomId, int memberId);
+    
+    @Insert("""
+    		INSERT INTO reply
+				SET regDate = NOW()
+					, updateDate = NOW()
+					, memberId = #{memberId}
+					, relTypeCode = 'chat'
+					, relId = #{relId}
+					, `body` = #{body}
+    		""")
+	public int doInsertMessage(int memberId, int relId, String body);
+    
+    @Select("""
+    		SELECT r.regDate 
+					, r.body message
+					, m.nickname writer
+				FROM reply r
+				INNER JOIN `member` m
+				ON r.memberId = m.id
+				WHERE relTypeCode = 'chat'
+				AND relId = #{roomId};
+    		""")
+	public List<ChatMessageDTO> getMessages(int roomId);
+    
 }

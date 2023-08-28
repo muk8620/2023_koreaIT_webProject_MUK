@@ -51,6 +51,9 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/reply/doModify");
 		ir.addPathPatterns("/usr/reply/doDelete");
 		ir.addPathPatterns("/usr/reply/getReplyContent");
+		ir.addPathPatterns("/usr/chat/doCreate");
+		ir.addPathPatterns("/usr/chat/rooms");
+		ir.addPathPatterns("/usr/chat/room");
 
 		ir = registry.addInterceptor(needLogoutInterceptor);
 		ir.addPathPatterns("/usr/member/doJoin");
