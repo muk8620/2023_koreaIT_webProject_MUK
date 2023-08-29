@@ -2,6 +2,8 @@ package com.koreaIT.webProjectMuk.controller;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreaIT.webProjectMuk.dto.ChatMessageDTO;
 import com.koreaIT.webProjectMuk.dto.ChatRoomDTO;
 import com.koreaIT.webProjectMuk.service.ChatService;
 import com.koreaIT.webProjectMuk.util.Util;
@@ -52,8 +55,24 @@ public class UsrChatRoomController {
     public String showRoom(@PathVariable("id") int id, Model model){
     	
     	ChatRoomDTO room = chatService.getRoomByRoomId(id);
-
+    	List<ChatMessageDTO> messages = chatService.getMessages(room.getId());
+    	
+    	JSONArray jsonArrayMessage = new JSONArray();
+    	
+    	try {
+			for (ChatMessageDTO message : messages) {
+	            JSONObject messageJson = new JSONObject();
+	            messageJson.put("message", message.getMessage());
+	            messageJson.put("writer", message.getWriter());
+	            
+	            jsonArrayMessage.add(messageJson);
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
         model.addAttribute("room", room);
+        model.addAttribute("messages", jsonArrayMessage);
         model.addAttribute("loginedMember", rq.getLoginedMember());
         
         return "usr/chat/room";

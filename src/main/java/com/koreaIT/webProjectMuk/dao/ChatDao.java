@@ -54,10 +54,10 @@ public interface ChatDao {
 					, updateDate = NOW()
 					, memberId = #{memberId}
 					, relTypeCode = 'chat'
-					, relId = #{relId}
+					, relId = #{roomId}
 					, `body` = #{body}
     		""")
-	public int doInsertMessage(int memberId, int relId, String body);
+	public int doInsertMessage(int memberId, int roomId, String body);
     
     @Select("""
     		SELECT r.regDate 

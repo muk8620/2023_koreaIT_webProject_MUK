@@ -38,8 +38,8 @@ public class ChatService {
 		return chatRoomDao.getRoomByRoomIdAndMemberId(roomId, memberId);
 	}
 
-	public int doInsertMessage(int memberId, int relId, String body) {
-		return chatRoomDao.doInsertMessage(memberId, relId, body);
+	public int doInsertMessage(int memberId, int roomId, String body) {
+		return chatRoomDao.doInsertMessage(memberId, roomId, body);
 	}
 
 	public List<ChatMessageDTO> getMessages(int roomId) {

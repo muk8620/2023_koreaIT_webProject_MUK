@@ -33,9 +33,22 @@ public class UsrChatStompController {
     	int room = chatService.getRoomByRoomIdAndMemberId(roomId, memberId);
     	
     	if (room == 0) {
+    		String body = message.getWriter() + "님이 채팅방에 참여하였습니다.";
+    		
+    		int insertCheck = chatService.doInsertMessage(memberId, roomId, body);
+    		
+    		if (insertCheck == 0) {
+        		message.setMessage("방 입장에 실패했습니다.");
+        		template.convertAndSend("/sub/usr/chat/room?id=" + message.getRoomId(), message);
+        		return;
+        	}
+    		
     		chatService.doIncreaseParticipant(roomId, memberId);
-    		message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
+    		
+    		message.setMessage(body);
+    		
     		template.convertAndSend("/sub/usr/chat/room?id=" + roomId, message);
+    		
     	}
     }
     
@@ -55,10 +68,10 @@ public class UsrChatStompController {
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO message){
     	int memberId = message.getMemberId();
-    	int relId = message.getRoomId(); 
-        String body = message.getMessage();
+    	int roomId = message.getRoomId(); 
+        String body = message.getMessage();	
         
-    	int insertCheck = chatService.doInsertMessage(memberId, relId, body);
+    	int insertCheck = chatService.doInsertMessage(memberId, roomId, body);
     	
     	if (insertCheck == 0) {
     		message.setMessage("메시지 전송에 실패했습니다.");
