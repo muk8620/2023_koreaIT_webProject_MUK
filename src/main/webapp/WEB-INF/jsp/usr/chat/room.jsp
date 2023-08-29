@@ -28,18 +28,30 @@
         	   let writer = content.writer;
 	           let message = content.message;
 	           let str = '';
+	           console.log('writer:' + writer);
+	           
+	           if (writer === 'admin') {
+	        	   $("#msgArea").append(message);
+	        	   return;
+	           }
 	           
 	           if(writer === username){
-	               str = "<div class='col-6'>";
-	               str += "<div class='alert alert-secondary'>";
-	               str += "<b>" + writer + " : " + message + "</b>";
-	               str += "</div></div>";
+	        	   str = $('<div class="chat chat-end">').append(
+		       		        $('<div class="chat-header">').append(
+		       		            writer,
+		       		        ),
+		       		        $('<div class="chat-bubble chat-bubble-warning">').text(message),
+		       		        $('<div class="chat-footer opacity-50">').text('time')
+		       		     );
 	               $("#msgArea").append(str);
 	           } else{
-	               str = "<div class='col-6'>";
-	               str += "<div class='alert alert-warning'>";
-	               str += "<b>" + writer + " : " + message + "</b>";
-	               str += "</div></div>";
+	        	   str = $('<div class="chat chat-start">').append(
+		       		        $('<div class="chat-header">').append(
+		       		            writer,
+		       		        ),
+		       		        $('<div class="chat-bubble chat-bubble-info">').text(message),
+		       		        $('<div class="chat-footer opacity-50">').text('time')
+		       		     );
 	               $("#msgArea").append(str);
 	           }
 		    }
@@ -56,13 +68,12 @@
 		       
 		       stomp.subscribe("/sub/usr/chat/room?id=" + roomId, function (chat) {
 		           let contents = JSON.parse(chat.body);
-		           console.log(contents);
 		           
 	        	   showMessage(contents);
 		       });
 		
 		       //3. send(path, header, message)로 메세지를 보낼 수 있음
-		       stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, memberId:${loginedMember.id}, writer: username}))
+		       stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, memberId: ${loginedMember.id}, writer: username}));
 		    });
 		    
 	        
@@ -94,7 +105,7 @@
 	    <div class="col-6">
 	        <h1>${room.name }</h1>
 	    </div>
-	    <div>
+	    <div class="container">
 	        <div id="msgArea" class="col"></div>
 	        <div class="col-6">
 	            <div class="input-group mb-3">

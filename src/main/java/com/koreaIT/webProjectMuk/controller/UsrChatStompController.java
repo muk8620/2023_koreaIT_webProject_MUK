@@ -35,7 +35,7 @@ public class UsrChatStompController {
     	if (room == 0) {
     		String body = message.getWriter() + "님이 채팅방에 참여하였습니다.";
     		
-    		int insertCheck = chatService.doInsertMessage(memberId, roomId, body);
+    		int insertCheck = chatService.doInsertMessage(1, roomId, body);
     		
     		if (insertCheck == 0) {
         		message.setMessage("방 입장에 실패했습니다.");
@@ -46,23 +46,11 @@ public class UsrChatStompController {
     		chatService.doIncreaseParticipant(roomId, memberId);
     		
     		message.setMessage(body);
+    		message.setWriter("admin");
     		
     		template.convertAndSend("/sub/usr/chat/room?id=" + roomId, message);
     		
     	}
-    }
-    
-    @MessageMapping("/chat/messageList")
-    public void messageList(ChatMessageDTO message){
-    	int roomId = message.getRoomId();
-    	
-    	List<ChatMessageDTO> historyMessage = chatService.getMessages(roomId);
-    	
-    	if (historyMessage == null) {
-    		return;
-    	}
-    	
-    	template.convertAndSend("/sub/usr/chat/room?id=" + roomId, historyMessage);
     }
     
     @MessageMapping("/chat/message")
