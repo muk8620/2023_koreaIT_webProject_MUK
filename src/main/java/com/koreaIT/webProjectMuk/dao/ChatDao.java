@@ -1,7 +1,9 @@
 package com.koreaIT.webProjectMuk.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -50,14 +52,14 @@ public interface ChatDao {
     
     @Insert("""
     		INSERT INTO reply
-				SET regDate = NOW()
+				SET regDate = #{regDate}
 					, updateDate = NOW()
 					, memberId = #{memberId}
 					, relTypeCode = 'chat'
 					, relId = #{roomId}
 					, `body` = #{body}
     		""")
-	public int doInsertMessage(int memberId, int roomId, String body);
+	public int doInsertMessage(String regDate, int memberId, int roomId, String body);
     
     @Select("""
     		SELECT r.regDate 
@@ -67,8 +69,15 @@ public interface ChatDao {
 				INNER JOIN `member` m
 				ON r.memberId = m.id
 				WHERE relTypeCode = 'chat'
-				AND relId = #{roomId};
+				AND relId = #{roomId}
     		""")
 	public List<ChatMessageDTO> getMessages(int roomId);
+    
+    @Delete("""
+    		DELETE FROM chatRoomParticipant  
+				WHERE chatRoomId = #{roomId}
+				AND memberId = #{memberId}
+    		""")
+	public void doDeleteParticipant(int roomId, int memberId);
     
 }

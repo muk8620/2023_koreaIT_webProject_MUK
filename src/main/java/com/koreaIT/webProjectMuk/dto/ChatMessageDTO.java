@@ -10,4 +10,9 @@ public class ChatMessageDTO {
     private int memberId;
     private String writer;
     private String message;
+    
+    public String getForPrintMessage() {
+		return this.message.replaceAll("\n", "<br />");
+	}
+    
 }

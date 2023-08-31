@@ -11,17 +11,20 @@ import com.koreaIT.webProjectMuk.vo.Calendar;
 public interface CalendarDao {
 	
 	@Select("""
-			SELECT  id
+			SELECT  c.id
 					, date_format(`start`, '%Y-%m-%dT%H:%i:%s') AS start
 					, date_format(`end`, '%Y-%m-%dT%H:%i:%s') AS end
-					, title
-					, allday
-					, content
-					, textColor
-					, backgroundColor
-					, borderColor
-				FROM calendar
+					, c.title
+					, c.content
+					, c.textColor
+					, c.backgroundColor
+					, c.borderColor
+					, m.nickname 
+				FROM calendar c
+				INNER JOIN `member` m
+				ON c.memberId = m.id
+				WHERE m.id = #{id}
 			""")
-	public ArrayList<Calendar> getCalenderList();
+	public ArrayList<Calendar> getCalenderList(int id);
 	
 }

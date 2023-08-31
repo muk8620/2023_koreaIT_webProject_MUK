@@ -18,8 +18,8 @@ public class CalendarService {
 		
 	}
 	
-	public ArrayList<Calendar> getCalendarList() {
-		return calendarDao.getCalenderList();
+	public ArrayList<Calendar> getCalendarList(int id) {
+		return calendarDao.getCalenderList(id);
 	}
 	
 	

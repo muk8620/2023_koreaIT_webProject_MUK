@@ -14,14 +14,22 @@
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!-- 폰트어썸 불러오기 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<!-- 내부CSS/JS 불러오기 -->
 <link rel="stylesheet" href="/resource/common.css" 	/>	
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle }</title>
 </head>
 <body>
 	<div class="h-20 flex container mx-auto text-3xl">
-		<a class="px-3 flex items-center" href="/"><span>로고</span></a>
+		<c:choose>
+			<c:when test="${rq.getLoginedMemberId() == 0}">
+				<a class="px-3 flex items-center" href="/"><span><i class="fa-regular fa-user fa-xl"></i> ${pageTitle }</span></a>
+			</c:when>
+			<c:otherwise>
+				<a class="px-3 flex items-center" href="/"><span><i class="fa-solid fa-users fa-xl"></i> ${pageTitle }</span></a>
+			</c:otherwise>
+		</c:choose>
 		<div class="flex-grow"></div>
 		<ul class="flex menu menu-horizontal bg-base-200">
 			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/">HOME</a></li>

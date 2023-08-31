@@ -21,4 +21,11 @@ public class UsrHomeController {
 	public String showPopUp() {
 		return "usr/home/popUp";
 	}
+	
+	@RequestMapping("/test")
+	public String test() {
+		return "usr/home/test";
+	}
+	
+	
 }

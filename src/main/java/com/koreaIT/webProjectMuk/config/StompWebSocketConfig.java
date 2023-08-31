@@ -9,6 +9,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
+	
+//	private Rq rq;
+//	private Stomp
+//	
+//	@Autowired
+//	public StompWebSocketConfig(Rq rq) {
+//		this.rq = rq;
+//	}
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -22,4 +30,9 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/pub");
         registry.enableSimpleBroker("/sub");
     }
+    
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.interceptors(stompInterceptor);
+//    }
 }

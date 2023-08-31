@@ -54,6 +54,8 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/chat/doCreate");
 		ir.addPathPatterns("/usr/chat/rooms");
 		ir.addPathPatterns("/usr/chat/room");
+		ir.addPathPatterns("/usr/calendar/list");
+		ir.addPathPatterns("/usr/calendar/getCalendarList");
 
 		ir = registry.addInterceptor(needLogoutInterceptor);
 		ir.addPathPatterns("/usr/member/doJoin");

@@ -1,6 +1,8 @@
 package com.koreaIT.webProjectMuk.util;
 
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Util {
 	public static boolean empty(Object obj) {
@@ -74,5 +76,9 @@ public class Util {
 		} catch (Exception ex) {
 			return "";
 		}
+	}
+	
+	public static String now() {
+		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 }

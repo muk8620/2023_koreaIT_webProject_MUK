@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Chatting" />
+<c:set var="pageTitle" value="ChatRooms" />
 <%@ include file="../common/header.jsp"%>
 
 	<script>
@@ -12,6 +12,7 @@
 			
 			if (!form.name.value) {
 				alert('방 이름을 입력해주세요.');
+				form.name.focus();
 				return;
 			}
 			
