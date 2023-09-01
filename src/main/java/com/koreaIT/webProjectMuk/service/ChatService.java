@@ -1,6 +1,5 @@
 package com.koreaIT.webProjectMuk.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,22 +30,21 @@ public class ChatService {
 		return chatRoomDao.getRoomByRoomId(id);
 	}
 
-	public void doIncreaseParticipant(int roomId, int memberId) {
-		chatRoomDao.doIncreaseParticipant(roomId, memberId);
+	public void doIncreaseParticipant(String regDate, int roomId, int memberId) {
+		chatRoomDao.doIncreaseParticipant(regDate, roomId, memberId);
 	}
 
-	public int getRoomByRoomIdAndMemberId(int roomId, int memberId) {
-		return chatRoomDao.getRoomByRoomIdAndMemberId(roomId, memberId);
+	public String getRegDateByRoomIdAndMemberId(int roomId, int memberId) {
+		return chatRoomDao.getRegDateByRoomIdAndMemberId(roomId, memberId);
 	}
 
 	public int doInsertMessage(String regDate, int memberId, int roomId, String body) {
 		chatRoomDao.doInsertMessage(regDate, memberId, roomId, body);
 		return 1;
 	}
-
-	public List<ChatMessageDTO> getMessages(int roomId) {
-		
-		return chatRoomDao.getMessages(roomId);
+	
+	public List<ChatMessageDTO> getMessagesByRegDate(int id, String userCheckRegDate) {
+		return chatRoomDao.getMessagesByRegDate(id, userCheckRegDate);
 	}
 
 	public void doDeleteParticipant(int roomId, int memberId) {

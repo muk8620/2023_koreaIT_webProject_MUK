@@ -55,24 +55,26 @@ public class UsrChatRoomController {
     public String showRoom(@PathVariable("id") int id, Model model){
     	
     	ChatRoomDTO room = chatService.getRoomByRoomId(id);
-    	int userCheck = chatService.getRoomByRoomIdAndMemberId(id, rq.getLoginedMemberId());
-    	
-    	List<ChatMessageDTO> messages = chatService.getMessages(room.getId());
+    	String userCheckRegDate = chatService.getRegDateByRoomIdAndMemberId(id, rq.getLoginedMemberId());
     	
     	JSONArray jsonArrayMessage = new JSONArray();
     	
-    	try {
-			for (ChatMessageDTO message : messages) {
-	            JSONObject messageJson = new JSONObject();
-	            messageJson.put("message", message.getForPrintMessage());
-	            messageJson.put("regDate", message.getRegDate());
-	            messageJson.put("writer", message.getWriter());
-	            
-	            jsonArrayMessage.add(messageJson);
-	        }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	if (userCheckRegDate != null) {
+    		List<ChatMessageDTO> messages = chatService.getMessagesByRegDate(room.getId(), userCheckRegDate);
+    		
+    		try {
+    			for (ChatMessageDTO message : messages) {
+    				JSONObject messageJson = new JSONObject();
+    				messageJson.put("message", message.getForPrintMessage());
+    				messageJson.put("regDate", message.getRegDate());
+    				messageJson.put("writer", message.getWriter());
+    				
+    				jsonArrayMessage.add(messageJson);
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	}
     	
         model.addAttribute("room", room);
         model.addAttribute("messages", jsonArrayMessage);

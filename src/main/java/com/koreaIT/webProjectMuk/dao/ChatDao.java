@@ -35,20 +35,20 @@ public interface ChatDao {
     public ChatRoomDTO getRoomByRoomId(int id);
     
     @Select("""
-    		SELECT COUNT(id) 
+    		SELECT regDate 
 				FROM chatRoomParticipant
 				WHERE chatRoomId = #{roomId}
 				AND memberId = #{memberId};
     		""")
-	public int getRoomByRoomIdAndMemberId(int roomId, int memberId);
+	public String getRegDateByRoomIdAndMemberId(int roomId, int memberId);
     
     @Insert("""
     		INSERT INTO chatRoomParticipant
-				SET regDate = NOW()
+				SET regDate = #{regDate}
 					, chatRoomId = #{roomId}
 					, memberId = #{memberId}
     		""")
-	public void doIncreaseParticipant(int roomId, int memberId);
+	public void doIncreaseParticipant(String regDate, int roomId, int memberId);
     
     @Insert("""
     		INSERT INTO reply
@@ -68,10 +68,11 @@ public interface ChatDao {
 				FROM reply r
 				INNER JOIN `member` m
 				ON r.memberId = m.id
-				WHERE relTypeCode = 'chat'
-				AND relId = #{roomId}
+				WHERE r.relTypeCode = 'chat'
+				AND r.relId = #{id}
+				AND r.regDate >= STR_TO_DATE(#{userCheckRegDate}, '%Y-%m-%d %H:%i:%s')
     		""")
-	public List<ChatMessageDTO> getMessages(int roomId);
+	public List<ChatMessageDTO> getMessagesByRegDate(int id, String userCheckRegDate);
     
     @Delete("""
     		DELETE FROM chatRoomParticipant  

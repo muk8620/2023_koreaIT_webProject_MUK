@@ -29,9 +29,9 @@ public class UsrChatStompController {
     	int roomId = message.getRoomId();
     	int memberId = message.getMemberId();
     	
-    	int room = chatService.getRoomByRoomIdAndMemberId(roomId, memberId);
+    	String userCheck = chatService.getRegDateByRoomIdAndMemberId(roomId, memberId);
     	
-    	if (room == 0) {
+    	if (userCheck == null) {
     		String body = message.getWriter() + "님이 채팅방에 참여하였습니다.\n";
     		String regDate = Util.now();
     		
@@ -43,14 +43,14 @@ public class UsrChatStompController {
         		return;
         	}
     		
-    		chatService.doIncreaseParticipant(roomId, memberId);
+    		chatService.doIncreaseParticipant(regDate, roomId, memberId);
     		
-    		message.setMessage(body);
+    		String printBody = message.getWriter() + "님이 채팅방에 참여하였습니다.<br />"; 
+    		message.setMessage(printBody);
     		message.setRegDate(regDate);
     		message.setWriter("admin");
     		
     		template.convertAndSend("/sub/usr/chat/room?id=" + roomId, message);
-    		
     	}
     }
     
@@ -59,19 +59,21 @@ public class UsrChatStompController {
     	int roomId = message.getRoomId();
     	int memberId = message.getMemberId();
     	
-    	int room = chatService.getRoomByRoomIdAndMemberId(roomId, memberId);
+    	String userCheck = chatService.getRegDateByRoomIdAndMemberId(roomId, memberId);
     	
-    	if (room != 0) {
+    	if (userCheck != null) {
     		String body = message.getWriter() + "님이 채팅방에서 나갔습니다.\n";
+    		String regDate = Util.now();
     		
+    		chatService.doInsertMessage(regDate, 1, roomId, body);
     		chatService.doDeleteParticipant(roomId, memberId);
-    		chatService.doInsertMessage(Util.now(), 1, roomId, body);
     		
-    		message.setMessage(body);
+    		String printBody = message.getWriter() + "님이 채팅방에서 나갔습니다.<br />"; 
+    		message.setMessage(printBody);
     		message.setWriter("admin");
+    		message.setRegDate(regDate);
     		
     		template.convertAndSend("/sub/usr/chat/room?id=" + roomId, message);
-    		
     	}
     }
     
@@ -81,7 +83,7 @@ public class UsrChatStompController {
     	int roomId = message.getRoomId(); 
         String body = message.getMessage();
         String regDate = Util.now();
-        	
+        
     	int insertCheck = chatService.doInsertMessage(regDate, memberId, roomId, body);
     	
     	if (insertCheck == 0) {
