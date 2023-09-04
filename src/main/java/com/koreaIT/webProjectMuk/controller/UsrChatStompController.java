@@ -80,7 +80,7 @@ public class UsrChatStompController {
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO message){
     	int memberId = message.getMemberId();
-    	int roomId = message.getRoomId(); 
+    	int roomId = message.getRoomId();
         String body = message.getMessage();
         String regDate = Util.now();
         

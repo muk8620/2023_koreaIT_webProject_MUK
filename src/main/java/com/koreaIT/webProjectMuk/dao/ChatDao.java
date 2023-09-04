@@ -1,6 +1,5 @@
 package com.koreaIT.webProjectMuk.dao;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -29,7 +28,7 @@ public interface ChatDao {
     
     @Select("""
     		SELECT * 
-    			FROM chatRoom
+    			FROM chatRoom	
     			WHERE id = #{id}
     		""")
     public ChatRoomDTO getRoomByRoomId(int id);

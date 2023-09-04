@@ -13,9 +13,13 @@
 		
 		    let roomName = '${room.name}';
 		    let roomId = '${room.id}';
+// 		    let roomMembers = 
 		    let username = '${loginedMember.nickname}';
 		    let messages = ${messages};
 		    
+			console.log(messages);
+			console.log(roomId);
+			console.log(username);
 			console.log(messages);
 		    
 		    messages.forEach(element => {

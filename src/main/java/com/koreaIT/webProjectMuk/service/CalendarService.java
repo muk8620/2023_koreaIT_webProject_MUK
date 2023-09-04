@@ -21,7 +21,10 @@ public class CalendarService {
 	public ArrayList<Calendar> getCalendarList(int id) {
 		return calendarDao.getCalenderList(id);
 	}
-	
-	
 
+	public void insertCalender(int memberId, String title, String start, String startTime, String end, String endTime,
+			boolean allDay) {
+		calendarDao.insertCalender(memberId, title, start, startTime, end, endTime, allDay);
+	}
+	
 }

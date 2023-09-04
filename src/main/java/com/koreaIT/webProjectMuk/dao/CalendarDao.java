@@ -2,6 +2,7 @@ package com.koreaIT.webProjectMuk.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,6 +15,7 @@ public interface CalendarDao {
 			SELECT  c.id
 					, date_format(`start`, '%Y-%m-%dT%H:%i:%s') AS start
 					, date_format(`end`, '%Y-%m-%dT%H:%i:%s') AS end
+					, c.allDay
 					, c.title
 					, c.content
 					, c.textColor
@@ -26,5 +28,18 @@ public interface CalendarDao {
 				WHERE m.id = #{id}
 			""")
 	public ArrayList<Calendar> getCalenderList(int id);
+
+	@Insert("""
+			INSERT into calendar 
+				SET regDate = NOW()
+				    , updateDate = NOW()
+				    , memberId = #{memberId}
+				    , title = #{title}
+				    , `start` = CONCAT(#{start}, ' ', #{startTime})
+				    , `end` = CONCAT(#{end}, ' ', #{endTime})
+				    , allDay = #{allDay};
+			""")
+	public void insertCalender(int memberId, String title, String start, String startTime, String end, String endTime,
+			boolean allDay);
 	
 }

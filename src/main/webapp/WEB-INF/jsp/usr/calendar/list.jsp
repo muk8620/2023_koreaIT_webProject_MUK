@@ -4,36 +4,38 @@
 
 <c:set var="pageTitle" value="Calendar" />
 <%@ include file="../common/header.jsp" %>
-	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<!-- 	fullcalendar 불러오기 -->
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script> 
+<!-- 	fullcalendar 언어(한국어)설정 -->
+	<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales/ko.global.min.js'></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {	
               left: 'prev,next today',
               center: 'title',
-              right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,list'
+              right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
             locale: 'ko',
+            buttonText: {
+            	year: '연',
+            	list: '목록'
+            },
             navLinks: true, // can click day/week names to navigate views
-            editable: true,
+            navLinkDayClick: function(date, jsEvent) {
+                console.log('day', date.toISOString());
+                console.log('coords', jsEvent.pageX, jsEvent.pageY);
+            },
+            editable: true, 
             selectable: true,
             selectMirror: true,	
             dayMaxEvents: true, // allow "more" link when too many events
             select: function(arg) {
-              var title = prompt('Event Title:');
-              if (title) {
-                calendar.addEvent({
-                  title: title,
-                  start: arg.start,
-                  end: arg.end,
-                  allDay: arg.allDay
-                })
-              }
-              calendar.unselect()
+            	location.href = 'write?date=' + arg.startStr;
             },
             eventClick: function(arg) {
-              if (confirm('Are you sure you want to delete this event?')) {
+              if (confirm('이 이벤트를 수정하시겠습니까?')) {
                 arg.event.remove()
               }
             },
@@ -47,12 +49,17 @@
 	          		successCallback(data);
 	             },
 	             error: function(){
-	               alert("simpleWithObject err");
-	             }
+	               alert("캘린더를 불러오지 못했습니다.");
+	             }	
           	  })
             }
 		});
+        
         calendar.render();
+//         $('div').on('click', function(){
+// 	      	console.log(calendar.getEventById(3));
+//         })
+        
       });
 
      </script>

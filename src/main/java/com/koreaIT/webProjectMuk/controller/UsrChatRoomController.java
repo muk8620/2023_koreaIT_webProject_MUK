@@ -1,5 +1,6 @@
 package com.koreaIT.webProjectMuk.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -62,12 +63,15 @@ public class UsrChatRoomController {
     	if (userCheckRegDate != null) {
     		List<ChatMessageDTO> messages = chatService.getMessagesByRegDate(room.getId(), userCheckRegDate);
     		
+    		// type safety hashmap 수정 필요
     		try {
+    			HashMap<String, Object> myHashMap1 = new HashMap<String, Object>();
     			for (ChatMessageDTO message : messages) {
-    				JSONObject messageJson = new JSONObject();
-    				messageJson.put("message", message.getForPrintMessage());
-    				messageJson.put("regDate", message.getRegDate());
-    				messageJson.put("writer", message.getWriter());
+    				myHashMap1.put("message", message.getForPrintMessage());
+    				myHashMap1.put("regDate", message.getRegDate());
+    				myHashMap1.put("writer", message.getWriter());
+    				
+    				JSONObject messageJson = new JSONObject(myHashMap1);
     				
     				jsonArrayMessage.add(messageJson);
     			}
