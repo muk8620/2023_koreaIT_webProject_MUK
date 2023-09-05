@@ -36,7 +36,7 @@
             },
             eventClick: function(arg) {
               if (confirm('이 이벤트를 수정하시겠습니까?')) {
-                arg.event.remove()
+            	location.href = 'modify?id=' + arg.event.id;
               }
             },
             events: function(info, successCallback, failureCallback){
