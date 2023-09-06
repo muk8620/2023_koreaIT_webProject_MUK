@@ -68,7 +68,7 @@ public class UsrMemberController {
 	@ResponseBody
 	public ResultData<String> loginIdDupCheck(String loginId) {
 		
-		if(Util.empty(loginId)) {
+		if (Util.empty(loginId)) {
 			return ResultData.from("F-1", "아이디를 입력해주세요.");
 		}
 		
@@ -208,27 +208,27 @@ public class UsrMemberController {
 		return "usr/member/findLoginPw";
 	}
 	
-//	@RequestMapping("/usr/member/doFindLoginId")
-//	@ResponseBody
-//	public String doFindLoginId(String name, String email) {
-//		
-//		if (Util.empty(name)) {
-//			return Util.jsHistoryBack("이름을 입력해주세요");
-//		}
-//		
-//		if (Util.empty(email)) {
-//			return Util.jsHistoryBack("이메일을 입력해주세요");
-//		}
-//		
-//		Member member = memberService.getMemberByNameAndEmail(name, email);
-//		
-//		if (member == null) {
-//			return Util.jsHistoryBack("입력하신 정보와 일치하는 회원이 없습니다");
-//		}
-//		
-//		return Util.jsReplace(Util.f("회원님의 아이디는 [ %s ] 입니다", member.getLoginId()), "login");
-//	}
-//	
+	@RequestMapping("/usr/member/doFindLoginId")
+	@ResponseBody
+	public String doFindLoginId(String name, String email) {
+		
+		if (Util.empty(name)) {
+			return Util.jsHistoryBack("이름을 입력해주세요");
+		}
+		
+		if (Util.empty(email)) {
+			return Util.jsHistoryBack("이메일을 입력해주세요");
+		}
+		
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+		
+		if (member == null) {
+			return Util.jsHistoryBack("입력하신 정보와 일치하는 회원이 없습니다");
+		}
+		
+		return Util.jsReplace(Util.f("회원님의 아이디는 [ %s ] 입니다", member.getLoginId()), "login");
+	}
+	
 //	@RequestMapping("/usr/member/doFindLoginPw")
 //	@ResponseBody
 //	public String doFindLoginPw(String loginId, String name, String email) {

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="chatRoom" />
+<c:set var="pageTitle" value="채팅" />
 <%@ include file="../common/header.jsp"%>
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
@@ -13,7 +13,6 @@
 		
 		    let roomName = '${room.name}';
 		    let roomId = '${room.id}';
-// 		    let roomMembers = 
 		    let username = '${loginedMember.nickname}';
 		    let messages = ${messages};
 		    
@@ -120,8 +119,11 @@
 		    })
 		});	
 	</script>
-
-	<div class="container">
+	
+<!-- 		<div class="container mx-auto"> -->
+<!-- 		</div> -->
+	
+	<section class="container mx-auto mt-8">
 	    <div class="col-6">
 	        <h1>${room.name }</h1>
 	    </div>
@@ -138,5 +140,6 @@
 	        </div>
 	    </div>
 	    <div class="col-6"></div>
-	</div>
+	</section>
+	
 <%@ include file="../common/footer.jsp"%>

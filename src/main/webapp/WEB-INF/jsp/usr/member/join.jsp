@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Join" />
+<c:set var="pageTitle" value="회원가입" />
 <%@ include file="../common/header.jsp"%>
 
 <script>
@@ -101,8 +101,6 @@
 		$.get('loginIdDupCheck', {
 			loginId : el.value
 		}, function(data){
-			console.log(data);
-			
 			if (data.fail) {
 				loginIdDupCheckMsg.html(`<span class="text-red-400">\${data.data1}은(는) \${data.msg}</span>`);
 				validLoginId = '';
@@ -110,7 +108,6 @@
 				loginIdDupCheckMsg.html(`<span class="text-green-400">\${data.data1}은(는) \${data.msg}</span>`);
 				validLoginId = data.data1;
 			}
-			
 		}, 'json')
 	}
 </script>
@@ -125,26 +122,26 @@
 						</colgroup>
 						<tbody>
 							<tr height="100">
-								<th>아이디</th>
+								<th>*아이디</th>
 								<td>
 									<input class="input input-bordered input-accent w-3/5" type="text" name="loginId" placeholder="아이디를 입력해주세요." onblur="loginIdDupCheck(this);"/>
 									<div id="loginIdDupCheckMsg" class="text-base mt-2 h-5"></div>
 								</td>
 							</tr>
 							<tr>
-								<th>비밀번호</th>
+								<th>*비밀번호</th>
 								<td><input class="input input-bordered input-accent w-3/5" type="password" name="loginPw" placeholder="비밀번호를 입력해주세요."/></td>
 							</tr>
 							<tr>
-								<th>비밀번호 확인</th>
+								<th>*비밀번호 확인</th>
 								<td><input class="input input-bordered input-accent w-3/5" type="password" name="loginPwCheck" placeholder="비밀번호 확인을 입력해주세요."/></td>
 							</tr>
 							<tr>
-								<th>이름</th>
+								<th>*이름</th>
 								<td><input class="input input-bordered input-accent w-3/5" type="text" name="name" placeholder="이름을 입력해주세요."/></td>
 							</tr>
 							<tr>
-								<th>닉네임</th>
+								<th>*닉네임</th>
 								<td><input class="input input-bordered input-accent w-3/5" type="text" name="nickname" placeholder="닉네임을 입력해주세요."/></td>
 							</tr>
 							<tr>

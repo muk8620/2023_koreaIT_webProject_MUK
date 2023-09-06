@@ -1,34 +1,17 @@
-DROP DATABASE IF EXISTS project;
-CREATE DATABASE project;
-USE project;
+DROP DATABASE IF EXISTS mukProject;
+CREATE DATABASE mukProject;
+USE mukProject;
 
-# article 테이블 생성
-# truncate table article;
-# drop table article;
+/*
 
-CREATE TABLE article(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
-    , regDate DATETIME NOT NULL
-    , updateDate DATETIME NOT NULL
-    , memberId INT UNSIGNED NOT NULL
-    , groupId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '속한 그룹이 없는 경우 : 0'
-    , title VARCHAR(80) NOT NULL
-    , `body` TEXT NOT NULL
-);
+SELECT * FROM `member`;
+SELECT * FROM `group`;
+SELECT * FROM reply;
+SELECT * FROM calendar;
+SELECT * FROM chatRoom;
+SELECT * FROM chatRoomParticipant;
 
-# board 테이블 생성
-# truncate table board;
-# drop table board;
-
-CREATE TABLE board(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
-    , regDate DATETIME NOT NULL
-    , updateDate DATETIME NOT NULL
-    , `code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(공지사항), free(자유), ...'
-    , `name` VARCHAR(40) NOT NULL UNIQUE COMMENT '게시판 이름'
-    , delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부 (삭제 전 = 0, 삭제 후 = 1)'
-    , delDate DATETIME COMMENT '삭제 날짜'
-);
+*/
 
 # `member` 테이블 생성
 # truncate table `member`;
@@ -50,19 +33,6 @@ CREATE TABLE `member`(
     , delDate DATETIME COMMENT '탈퇴 날짜'
 );
 
-# `group` 테이블 생성
-# truncate table `group`;
-# drop table `group`;
-
-CREATE TABLE `group`(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
-    , regDate DATETIME NOT NULL
-    , updateDate DATETIME NOT NULL
-    , `name` VARCHAR(40) NOT NULL
-    , delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)'
-    , delDate DATETIME COMMENT '탈퇴 날짜'
-);
-
 # reply 테이블 생성
 # truncate table reply;
 # drop table reply;
@@ -77,110 +47,129 @@ CREATE TABLE reply (
     , `body` TEXT NOT NULL
 );
 
-# calendar 테이블 생성
-# truncate table calendar;
-# drop table calendar;
+--  calendar 테이블 생성
+--  truncate table calendar;
+--  drop table calendar;
 
 CREATE TABLE calendar(
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
 	, regDate DATETIME NOT NULL
-    , updateDate DATETIME NOT NULL
-    , memberId INT UNSIGNED NOT NULL
+  	, updateDate DATETIME NOT NULL
+  	, memberId INT UNSIGNED NOT NULL
 	, groupId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '속한 그룹이 없는 경우 : 0'
 	, title VARCHAR(50) NOT NULL
-	, writer VARCHAR(50) NOT NULL
 	, content VARCHAR(1000) 
-	, start1 DATETIME NOT NULL
-	, end1 DATETIME NOT NULL
-	, allDay TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종일 하는 일정 (false = 0, true = 1)'
-	, textColor VARCHAR(50)
-	, backgroundColor VARCHAR(50)
-	, borderColor VARCHAR(50)
+	, `start` DATETIME NOT NULL
+	, `end` DATETIME NOT NULL
+	, allDay boolean NOT NULL DEFAULT false
+	, textColor VARCHAR(50) NOT NULL DEFAULT 'yellow'
+	, backgroundColor VARCHAR(50) NOT NULL DEFAULT 'navy'
+	, borderColor VARCHAR(50) NOT NULL DEFAULT 'navy'
 );
 
-SELECT * FROM article;
-SELECT * FROM board;
-SELECT * FROM `member`;
-SELECT * FROM `group`;
-SELECT * FROM reply;
-SELECT * FROM calendar;
+--  chatRoom 테이블 생성
+--  truncate table chatRoom;
+--  drop table chatRoom;
 
-INSERT INTO calendar 
-SET regDate = NOW()
-    , updateDate = NOW()
-    , memberId = 1
-    , title = '할일'
-    , writer = '나'
-    , content = '테스트'
-    , start1 = "2021-05-01T00:00:00"
-    , end1 = "2021-05-03T00:00:00"
-    , textColor = "yellow"
-    , backgroundColor = "navy"
-    , borderColor = "navy";
+CREATE TABLE chatRoom(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , regDate DATETIME NOT NULL
+    , `name` VARCHAR(20) NOT NULL
+    , creatorId int NOT NULL
+);
 
--- INSERT INTO article
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- memberId = 2,
--- boardId = 2,
--- title = '제목1',
--- `body` = '내용1';
--- 
--- INSERT INTO article
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- memberId = 3,
--- boardId = 2,
--- title = '제목2',
--- `body` = '내용2';
--- 
--- INSERT INTO article
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- memberId = 1,
--- boardId = 1,
--- title = '공지1',
--- `body` = '공지사항1';
--- 
--- INSERT INTO `member`
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- loginId = 'admin',
--- loginPw = SHA2('admin', 256),
--- authLevel = 3,
--- `name` = 'admin',
--- nickname = 'admin',
--- cellphoneNum = '01022222222',
--- email = 'admin@gmail.com';
--- 
--- INSERT INTO `member`
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- loginId = 'test2',
--- loginPw = SHA2('test2', 256),
--- `name` = 'test2',
--- nickname = 'test2',
--- cellphoneNum = '01011112222',
--- email = 'test2@gmail.com';
--- 
--- INSERT INTO `member`
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- loginId = 'test3',
--- loginPw = SHA2('test3', 256),
--- `name` = 'test3',
--- nickname = 'test3',
--- cellphoneNum = '01033334444',
--- email = 'test3@gmail.com';
--- 
--- INSERT INTO board
--- SET regDate = NOW(),
--- updateDate = NOW(),
--- `code` = 'notice',
--- `name` = '공지사항';
--- 
--- INSERT INTO board
--- SET reg//Date = NOW(),
--- updateDate = NOW(),
--- `code` = 'free',
--- `name` = '자유';
+--  chatRoomParticipant 테이블 생성
+--  truncate table chatRoomParticipant;
+--  drop table chatRoomParticipant;
+
+CREATE TABLE chatRoomParticipant(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , regDate DATETIME NOT NULL
+    , chatRoomId INT UNSIGNED NOT NULL
+    , memberId INT UNSIGNED NOT NULL
+);
+
+/*testData*/
+
+-- member --
+   
+INSERT INTO `member`
+	SET regDate = NOW()
+		, updateDate = NOW()
+		, loginId = 'admin'
+		, loginPw = SHA2('admin', 256)
+		, authLevel = 3
+		, `name` = 'admin'
+		, nickname = 'admin'
+		, cellphoneNum = '01022222222'
+		, email = 'admin@gmail.com';
+   
+INSERT INTO `member`
+	SET regDate = NOW()
+		, updateDate = NOW()
+		, loginId = 'test1'
+		, loginPw = SHA2('test1', 256)
+		, `name` = 'test1'
+		, nickname = 'test1'
+		, cellphoneNum = '01011112222'
+		, email = 'test1@gmail.com';
+   
+INSERT INTO `member`
+	SET regDate = NOW()
+		, updateDate = NOW()
+		, loginId = 'test2'
+		, loginPw = SHA2('test2', 256)
+		, `name` = 'test2'
+		, nickname = 'test2'
+		, cellphoneNum = '01033334444'
+		, email = 'test2@gmail.com';   
+	
+INSERT INTO `member`
+	SET regDate = NOW()
+		, updateDate = NOW()
+		, loginId = 'test3'
+		, loginPw = SHA2('test3', 256)
+		, `name` = 'test3'
+		, nickname = 'test3'
+		, cellphoneNum = '01033334444'
+		, email = 'test3@gmail.com';
+		
+-- calender --
+
+INSERT into calendar 
+	SET regDate = NOW()
+	    , updateDate = NOW()
+	    , memberId = 2
+	    , title = '테스트1'
+	    , content = '테스트1 내용'
+	    , `start` = '2023-09-05'
+	    , `end` = '2023-09-07'
+	    , allDay = TRUE
+	    , textColor = 'yellow'
+	    , backgroundColor = 'navy'
+	    , borderColor = 'navy';
+
+INSERT into calendar 
+	SET regDate = NOW()
+	    , updateDate = NOW()
+	    , memberId = 2
+	    , title = '테스트2'
+	    , content = '테스트2 내용'
+	    , `start` = '2023-09-08'
+	    , `end` = '2023-09-12'
+	    , allDay = TRUE
+	    , textColor = 'yellow'
+	    , backgroundColor = 'navy'
+	    , borderColor = 'navy';
+	   
+INSERT into calendar 
+	SET regDate = NOW()
+	    , updateDate = NOW()
+	    , memberId = 2
+	    , title = '테스트3'
+	    , content = '테스트3 내용'
+	    , `start` = '2023-09-18 12:00'
+	    , `end` = '2023-09-18 13:20'
+	    , textColor = 'yellow'
+	    , backgroundColor = 'navy'
+	    , borderColor = 'navy';

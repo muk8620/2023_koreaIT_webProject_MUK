@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="ChatRooms" />
+<c:set var="pageTitle" value="채팅" />
 <%@ include file="../common/header.jsp"%>
 
 	<script>
@@ -41,7 +41,7 @@
 				</table>
 				<c:if test="${rq.getLoginedMemberId() != 0}">
 					<form action="doCreate" class="mt-1 flex justify-end" onsubmit="isEmpty(this); return false;">
-					    <input type="text" name="name" class="form-control">
+					    <input type="text" placeholder="Type here" name="name" class="form-control input input-bordered input-primary w-full max-w-xs">
 					    <button class="btn btn-active btn-neutral">개설하기</button>
 					</form>
 				</c:if>	

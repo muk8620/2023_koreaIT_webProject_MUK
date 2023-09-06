@@ -43,7 +43,7 @@ public class MemberService {
 		return ResultData.from("S-1", Util.f("%s회원님이 가입되었습니다", nickname), "member", getMemberById(getLastInsertId()));
 	}
 
-	private Member getMemberByNameAndEmail(String name, String email) {
+	public Member getMemberByNameAndEmail(String name, String email) {
 		return memberDao.getMemberByNameAndEmail(name, email);
 	}
 

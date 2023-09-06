@@ -20,39 +20,42 @@
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle }</title>
 </head>
+
+<script>
+	$(document).ready(function(){
+		$('li > a.header')
+			.filter(function(index, selector){
+				return '${pageTitle}' === selector.textContent;
+			})
+			.addClass('active');
+	})
+</script>
 <body>
-	<div class="h-20 flex container mx-auto text-3xl">
-		<c:choose>
-			<c:when test="${rq.getLoginedMemberId() == 0}">
-				<a class="px-3 flex items-center" href="/"><span><i class="fa-regular fa-user fa-xl"></i> ${pageTitle }</span></a>
-			</c:when>
-			<c:otherwise>
-				<a class="px-3 flex items-center" href="/"><span><i class="fa-solid fa-users fa-xl"></i> ${pageTitle }</span></a>
-			</c:otherwise>
-		</c:choose>
+	<div class="h-20 flex container mx-auto mt-4 text-3xl">
+		<a class="px-3 flex items-center" href="/"><img class="inline-block" src="/resource/images/logo.png" width="100px" alt="❌" /> &nbsp;${pageTitle }</a>
 		<div class="flex-grow"></div>
 		<ul class="flex menu menu-horizontal bg-base-200">
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/">HOME</a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/">HOME</a></li>
 			<c:if test="${rq.getLoginedMemberId() == 0}">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/join">JOIN</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/login">LOGIN</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/member/join">회원가입</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/member/login">로그인</a></li>
 			</c:if>
 			<c:if test="${rq.getLoginedMemberId() != 0}">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/myPage">MYPAGE</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/member/doLogout">LOGOUT</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/member/myPage">회원정보</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/member/doLogout">로그아웃</a></li>
 			</c:if>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/api/APITest">API</a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/api/APITest2">API2</a></li>
+<!-- 			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/api/APITest">API</a></li> -->
+<!-- 			<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/api/APITest2">API2</a></li> -->
 		</ul>
 	</div>
 	
 	<section class="my-3 text-2xl">
 		<div class="container mx-auto px-3">
 			<ul class="flex menu menu-horizontal bg-base-200">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/calendar/list">일정</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/chat/rooms">채팅</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/map/list">지도</a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/album/list">앨범</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/calendar/list">일정</a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl header" href="/usr/chat/rooms">채팅</a></li>
+<!-- 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/map/list">지도</a></li> -->
+<!-- 				<li class="hover:underline"><a class="h-full px-3 flex items-center text-3xl" href="/usr/album/list">앨범</a></li> -->
 			</ul>
 		</div>
 	</section>

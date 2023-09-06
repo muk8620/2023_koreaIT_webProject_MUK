@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Calendar" />
+<c:set var="pageTitle" value="일정" />
 <%@ include file="../common/header.jsp" %>
 <!-- 	fullcalendar 불러오기 -->
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script> 

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Page" />
+<c:set var="pageTitle" value="회원정보" />
 <%@ include file="../common/header.jsp"%>
 
 	<section class="mt-8">

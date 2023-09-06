@@ -32,7 +32,7 @@
 			<div class="mt-2 flex justify-between">
 				<button class="btn btn-accent btn-sm" onclick="history.back();">뒤로가기</button>
 				<div>
-					<a class="btn btn-accent btn-sm" href="findLoginPw">비밀번호 찾기</a>
+<!-- 					<a class="btn btn-accent btn-sm" href="findLoginPw">비밀번호 찾기</a> -->
 					<a class="btn btn-accent btn-sm" href="login">로그인</a>
 				</div>
 			</div>
