@@ -8,7 +8,6 @@
 	<section class="mt-8">
 		<div class="container mx-auto">
 			<div class="card w-96 glass">
-				<figure><img src="/resource/images/강아지.jpg" alt="car!"/></figure>
 				<div class="card-body">
 			  		<h2 class="card-title">소통 자국</h2>
 <!-- 			    	<p>How to park your car at your garage?</p> -->
